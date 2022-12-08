@@ -1,5 +1,7 @@
 # Como iniciar um projeto com Next e styledcomponents
 
+## Não se esqueça de criar o arquivo \_document.tsx necessário para usar styled-components com SSR com Next.js
+
 ## Necessario instalar o plugin 'babel-plugin-styled-components' pois o styled components cria 'on the fly' o nome da classe do css, e muda no server e no client. Para não dar conflito, é necessario essa biblioteca e o arquivo .babelrc com a configuração que está dentro dele.
 
 ---
