@@ -1,7 +1,13 @@
+import { Post, PostService } from 'enzomoraes-alganews-sdk';
 import Head from 'next/head';
 import FeaturedPost from '../components/FeaturedPost';
 
-export default function Home() {
+interface HomeProps {
+  posts: Post.Paginated;
+}
+
+export default function Home(props: HomeProps) {
+  const { posts } = props;
   return (
     <div>
       <Head>
@@ -10,44 +16,16 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main>
-        <FeaturedPost
-          postSummary={{
-            id: 42,
-            slug: 'como-fazer-x-coisas-com-react-js',
-            title: 'Como fazer X coisas com React.js',
-            imageUrls: {
-              default: '/laptop.jpeg',
-              small: '/laptop.jpeg',
-              medium: '/laptop.jpeg',
-              large: '/laptop.jpeg',
-            },
-            editor: {
-              id: 29,
-              name: 'Daniel Bonifacio',
-              avatarUrls: {
-                default:
-                  'https://storage.googleapis.com/alganews-files/posts/avatar-joao.jpeg',
-                small:
-                  'https://storage.googleapis.com/alganews-files/posts/avatar-joao-small.jpeg',
-                medium:
-                  'https://storage.googleapis.com/alganews-files/posts/avatar-joao-medium.jpeg',
-                large:
-                  'https://storage.googleapis.com/alganews-files/posts/avatar-joao-large.jpeg',
-              },
-              createdAt: '2017-03-04T00:12:45Z',
-            },
-            createdAt: '2020-12-01T18:09:02Z',
-            updatedAt: '2023-01-03T21:10:06.931Z',
-            published: true,
-            tags: ['JavaScript'],
-            canBePublished: true,
-            canBeUnpublished: true,
-            canBeDeleted: true,
-            canBeEdited: true,
-          }}
-        ></FeaturedPost>
-      </main>
+      {posts?.content && (
+        <FeaturedPost postSummary={posts.content[0]}></FeaturedPost>
+      )}
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const posts = await PostService.getAllPosts({ page: 0 });
+  return {
+    props: { posts },
+  };
 }
