@@ -2,13 +2,14 @@ import { transparentize } from 'polished';
 import styled from 'styled-components';
 import { HEADER_HEIGHT } from '../_constants';
 import Logo from './Logo';
+import Navbar from './Navbar';
 
 export default function Header() {
   return (
     <Wrapper>
       <Container>
         <Logo />
-        <span>navbar</span>
+        <Navbar />
       </Container>
     </Wrapper>
   );
@@ -30,4 +31,6 @@ const Container = styled.div`
   max-width: 848px;
   margin: auto;
   height: 100%;
+
+  padding: 0 16px;
 `;
