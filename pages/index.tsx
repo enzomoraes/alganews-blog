@@ -1,9 +1,11 @@
 import { Post, PostService } from 'enzomoraes-alganews-sdk';
+import { ServerResponse } from 'http';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import FeaturedPost from '../components/FeaturedPost';
 
 interface HomeProps {
-  posts: Post.Paginated;
+  posts?: Post.Paginated;
 }
 
 export default function Home(props: HomeProps) {
@@ -23,9 +25,29 @@ export default function Home(props: HomeProps) {
   );
 }
 
-export async function getServerSideProps() {
-  const posts = await PostService.getAllPosts({ page: 0 });
+function sendToHomePage(res: ServerResponse) {
+  res.statusCode = 302;
+  res.setHeader('Location', '/?page=1');
+  return { props: {} };
+}
+
+export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
+  query,
+  res,
+}: GetServerSidePropsContext) => {
+  const { page: _page } = query;
+  const page = Number(_page);
+
+  if (isNaN(page) || page < 1) {
+    return sendToHomePage(res);
+  }
+  const posts = await PostService.getAllPosts({ page: page - 1 });
+
+  if (!posts.content?.length) {
+    return sendToHomePage(res);
+  }
+
   return {
     props: { posts },
   };
-}
+};
