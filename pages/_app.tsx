@@ -6,8 +6,17 @@ import GlobalStyles from '../styles/globalStyles';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Content from '../components/Content';
+import Error from 'next/error';
 
-export default function App({ Component, pageProps }: AppProps) {
+interface CustomAppProps extends NextPageProps {}
+
+export default function App({
+  Component,
+  pageProps,
+}: AppProps<CustomAppProps>) {
+  if (pageProps.error) {
+    return <Error statusCode={pageProps.error.statusCode} title={pageProps.error.message} />;
+  }
   return (
     <ThemeProvider theme={light}>
       <Header />
