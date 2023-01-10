@@ -1,5 +1,4 @@
 import { Post, PostService } from 'enzomoraes-alganews-sdk';
-import { ServerResponse } from 'http';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Router from 'next/router';
@@ -48,27 +47,28 @@ export default function Home(props: HomeProps) {
   );
 }
 
-function sendToHomePage(res: ServerResponse) {
-  res.statusCode = 302;
-  res.setHeader('Location', '/?page=1');
-  return { props: {} };
+function sendToHomePage() {
+  return {
+    redirect: {
+      permanent: false,
+      destination: '/?page=1',
+    },
+  };
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
   query,
-  res,
 }: GetServerSidePropsContext) => {
   const { page: _page } = query;
   const page = Number(_page);
-
   if (isNaN(page) || page < 1) {
-    return sendToHomePage(res);
+    return sendToHomePage();
   }
 
   const posts = await PostService.getAllPosts({ page: page - 1 });
 
   if (!posts.content?.length) {
-    return sendToHomePage(res);
+    return sendToHomePage();
   }
 
   return {
