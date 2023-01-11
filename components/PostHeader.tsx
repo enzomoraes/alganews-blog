@@ -2,6 +2,7 @@ import { Post } from 'enzomoraes-alganews-sdk';
 import Image from 'next/image';
 import { transparentize } from 'polished';
 import styled from 'styled-components';
+import formatPostDate from '../core/utils/formatPostDate';
 
 interface PostHeaderProps {
   thumbnail: string;
@@ -25,7 +26,7 @@ export default function PostHeader(props: PostHeaderProps) {
           alt={editor.name}
         />
       </Editor>
-      <PublishDate>{createdAt}</PublishDate>
+      <PublishDate>{formatPostDate(createdAt)}</PublishDate>
       <Title>{title}</Title>
     </Wrapper>
   );

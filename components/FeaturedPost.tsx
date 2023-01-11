@@ -2,6 +2,7 @@ import { Post } from 'enzomoraes-alganews-sdk';
 import Link from 'next/link';
 import { transparentize } from 'polished';
 import styled from 'styled-components';
+import formatPostDate from '../core/utils/formatPostDate';
 import Avatar from './Avatar';
 
 interface FeaturedPostProps {
@@ -23,7 +24,7 @@ export default function FeaturedPost(props: FeaturedPostProps) {
           <Avatar src={props.postSummary.editor.avatarUrls.small}></Avatar>
           <EditorDescription>
             <EditorName>{props.postSummary.editor.name}</EditorName>
-            <PostDate>há 3 dias</PostDate>
+            <PostDate>{formatPostDate(props.postSummary.createdAt)}</PostDate>
           </EditorDescription>
         </Editor>
         <Title>{props.postSummary.title}</Title>
