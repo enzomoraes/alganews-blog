@@ -1,28 +1,46 @@
 import { Post, PostService } from 'enzomoraes-alganews-sdk';
+import { ResourceNotFoundError } from 'enzomoraes-alganews-sdk/dist/errors';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 import { ParsedUrlQuery } from 'querystring';
-import {
-  InvalidDataError,
-  ResourceNotFoundError,
-} from 'enzomoraes-alganews-sdk/dist/errors';
-import CustomError from 'enzomoraes-alganews-sdk/dist/CustomError';
+import PostHeader from '../../../components/PostHeader';
 
 export default function PostPage(props: PostProps) {
-  return <div>{props.post?.title}</div>;
+  const { post } = props;
+  return (
+    <>
+      <Head>
+        <link
+          rel='canonical'
+          href={`http://localhost:3000/posts/${props.post?.id}/${props.post?.slug}`}
+        />
+      </Head>
+      {post && (
+        <PostHeader
+          createdAt={post?.createdAt}
+          editor={post?.editor}
+          thumbnail={post?.imageUrls.large}
+          title={post?.title}
+        ></PostHeader>
+      )}
+    </>
+  );
 }
 
 interface PostProps extends NextPageProps {
   post?: Post.Detailed;
+  host?: string;
 }
 
 interface Params extends ParsedUrlQuery {
   id: string;
+  slug: string;
 }
 
 export const getServerSideProps: GetServerSideProps<
   PostProps,
   Params
-> = async ({ params }) => {
+> = async ({ params, req }) => {
   try {
     if (!params) return { notFound: true };
 
@@ -34,7 +52,7 @@ export const getServerSideProps: GetServerSideProps<
     const post = await PostService.getExistingPost(postId);
 
     return {
-      props: { post },
+      props: { post, host: req.headers.host },
     };
   } catch (error: any) {
     if (error instanceof ResourceNotFoundError) {
