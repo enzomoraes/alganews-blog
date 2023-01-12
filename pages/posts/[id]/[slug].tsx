@@ -1,3 +1,4 @@
+import { DiscussionEmbed } from 'disqus-react';
 import { Post, PostService } from 'enzomoraes-alganews-sdk';
 import { ResourceNotFoundError } from 'enzomoraes-alganews-sdk/dist/errors';
 import { GetServerSideProps } from 'next';
@@ -8,6 +9,7 @@ import PostHeader from '../../../components/PostHeader';
 
 export default function PostPage(props: PostProps) {
   const { post } = props;
+  const pageTitle = `${post?.title} - Alganews`
   return (
     <>
       <Head>
@@ -18,7 +20,7 @@ export default function PostPage(props: PostProps) {
         <meta property='og:description' content={post?.body.slice(0, 54)} />
         <meta property='og:type' content='article' />
         <meta property='og:image' content={post?.imageUrls.medium} />
-        <title>{ post?.title } - AlgaNews</title>
+        <title>{pageTitle}</title>
         <link
           rel='canonical'
           href={`http://localhost:3000/posts/${props.post?.id}/${props.post?.slug}`}
@@ -33,6 +35,15 @@ export default function PostPage(props: PostProps) {
         ></PostHeader>
       )}
       {post?.body && <Markdown>{post.body}</Markdown>}
+      <DiscussionEmbed
+        shortname='alganews-16'
+        config={{
+          url: `http://${props.host}:3000/posts/${props.post?.id}/${props.post?.slug}`,
+          identifier: String(post?.id),
+          title: post?.title,
+          language: 'pt_BR'
+        }}
+      ></DiscussionEmbed>
     </>
   );
 }
