@@ -3,6 +3,7 @@ import { ResourceNotFoundError } from 'enzomoraes-alganews-sdk/dist/errors';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { ParsedUrlQuery } from 'querystring';
+import Markdown from '../../../components/Markdown';
 import PostHeader from '../../../components/PostHeader';
 
 export default function PostPage(props: PostProps) {
@@ -10,6 +11,14 @@ export default function PostPage(props: PostProps) {
   return (
     <>
       <Head>
+        {/* Open graph - pre visualizacao do site */}
+        <meta property='og:title' content={post?.title} />
+        <meta property='og:site_name' content='AlgaNews' />
+        <meta property='og:url' content='alganews.com.br' />
+        <meta property='og:description' content={post?.body.slice(0, 54)} />
+        <meta property='og:type' content='article' />
+        <meta property='og:image' content={post?.imageUrls.medium} />
+        <title>{ post?.title } - AlgaNews</title>
         <link
           rel='canonical'
           href={`http://localhost:3000/posts/${props.post?.id}/${props.post?.slug}`}
@@ -23,6 +32,7 @@ export default function PostPage(props: PostProps) {
           title={post?.title}
         ></PostHeader>
       )}
+      {post?.body && <Markdown>{post.body}</Markdown>}
     </>
   );
 }

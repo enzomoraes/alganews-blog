@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/react-syntax-highlighter": "^15.5.6",
     "babel-plugin-styled-components": "^2.0.7",
     "date-fns": "^2.29.3",
     "enzomoraes-alganews-sdk": "^2.9.0",
@@ -16,7 +17,10 @@
     "polished": "^4.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-markdown": "^8.0.4",
     "react-paginate": "^8.1.4",
+    "react-syntax-highlighter": "^15.5.0",
+    "remark-gfm": "^3.0.1",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
