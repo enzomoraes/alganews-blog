@@ -23,7 +23,7 @@ export default function PostPage(props: PostProps) {
         <title>{pageTitle}</title>
         <link
           rel='canonical'
-          href={`http://localhost:3000/posts/${props.post?.id}/${props.post?.slug}`}
+          href={`http://localhost:3000/posts/${post?.id}/${post?.slug}`}
         />
       </Head>
       {post && (
